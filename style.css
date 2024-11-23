@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-weight: 200;
+}
+
+main {
+  max-width: 375px;
+  min-height: 100vh;
+  font-family: sans-serif;
+  font-weight: 200;
+  background-image: linear-gradient(to bottom, rgb(72, 98, 214), white);
+}
+
+#title-location {
+  padding: 1.2em 2em;
+  color: rgba(255, 255, 255, 0.85);
+}
