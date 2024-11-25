@@ -7,7 +7,7 @@ const currentTempWind = document.querySelector("#current-temp-wind");
 const currentTemp = document.querySelector("#current-temp");
 const currentWind = document.querySelector("#current-wind");
 const week = document.querySelector("#week");
-const currentTime = new Date();
+// const currentTime = new Date();
 currentLocation.textContent = "Stavanger";
 
 async function getWeatherData() {
@@ -26,20 +26,20 @@ async function getWeatherData() {
 
 getWeatherData();
 
-console.log(currentTime.getHours(), currentTime.getMinutes());
+// console.log(currentTime.getHours(), currentTime.getMinutes());
 
 function construct(data) {
   let currentImageName = "";
-  let weatherCodeIndex = 0;
-  if (currentTime.getMinutes() >= 30) {
-    weatherCodeIndex = currentTime.getHours() + 1;
-  } else {
-    weatherCodeIndex = currentTime.getHours();
-  }
+  // let weatherCodeIndex = 0;
+  // if (currentTime.getMinutes() >= 30) {
+  //   weatherCodeIndex = currentTime.getHours() + 1;
+  // } else {
+  //   weatherCodeIndex = currentTime.getHours();
+  // }
 
   function weatherCodes() {
-    console.log(data.hourly.weather_code[currentTime.getHours()]);
-    console.log(data.current.weather_code);
+    // console.log(data.hourly.weather_code[currentTime.getHours()]);
+    // console.log(data.current.weather_code);
 
     if (data.current.weather_code === 0) {
       console.log("Clear sky");
@@ -131,7 +131,7 @@ function construct(data) {
   }
 
   weatherCodes();
-  currentImage.style.backgroundImage = `url(images/animated/${currentImageName}.svg)`;
+  currentImage.style.backgroundImage = `url(./images/animated/${currentImageName}.svg)`;
   currentTemp.textContent = `${data.current.temperature_2m}${data.current_units.temperature_2m}`;
   currentWind.textContent = `${data.current.wind_speed_10m}${data.current_units.wind_speed_10m}`;
 
