@@ -8,6 +8,11 @@ h2 {
   font-weight: 200;
 }
 
+body {
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
 main {
   max-width: 375px;
   min-height: 100vh;
@@ -17,6 +22,64 @@ main {
 }
 
 #title-location {
-  padding: 1.2em 2em;
+  padding: 1.2rem 2rem;
   color: rgba(255, 255, 255, 0.85);
+  filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.3));
+  /* background-color: rgba(0, 0, 0, 0.05); */
+}
+
+#current {
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#current-image {
+  width: 55%;
+  height: 100%;
+  padding: 1rem 2rem;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  filter: drop-shadow(0px 3px 5px rgba(0, 0, 0, 0.2));
+
+  /* height: 50vw; */
+}
+
+#current-temp-wind {
+  width: 45%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
+  padding: 0 2rem 0 0;
+
+  /* background-image: linear-gradient(
+    to bottom,
+    rgba(235, 244, 252, 0),
+    rgba(235, 244, 252, 0.2)
+  ); */
+  border-radius: 20px 0 0 0;
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.85);
+  filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.5));
+}
+
+#week {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(235, 244, 252, 0.5);
+  border-radius: 20px 0 0 0;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: rgba(0, 0, 0, 0.8);
+  justify-content: space-between;
+}
+
+.day {
+  display: flex;
+  justify-content: space-between;
 }
