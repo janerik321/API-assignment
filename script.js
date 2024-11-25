@@ -7,7 +7,7 @@ const currentTempWind = document.querySelector("#current-temp-wind");
 const currentTemp = document.querySelector("#current-temp");
 const currentWind = document.querySelector("#current-wind");
 const week = document.querySelector("#week");
-
+const currentTime = new Date();
 currentLocation.textContent = "Stavanger";
 
 async function getWeatherData() {
@@ -26,81 +26,105 @@ async function getWeatherData() {
 
 getWeatherData();
 
+console.log(currentTime.getHours(), currentTime.getMinutes());
+
 function construct(data) {
   let currentImageName = "";
+  let weatherCodeIndex = 0;
+  if (currentTime.getMinutes() >= 30) {
+    weatherCodeIndex = currentTime.getHours() + 1;
+  } else {
+    weatherCodeIndex = currentTime.getHours();
+  }
 
   function weatherCodes() {
-    if ((data.current.weather_code = 0)) {
+    console.log(data.hourly.weather_code[currentTime.getHours()]);
+    console.log(data.current.weather_code);
+
+    if (data.current.weather_code === 0) {
       console.log("Clear sky");
       currentImageName = "day";
-    } else if ((data.current.weather_code = 1)) {
+    } else if (data.current.weather_code === 1) {
       console.log("Mainly clear");
       currentImageName = "cloudy-day-1";
-    } else if ((data.current.weather_code = 2)) {
+    } else if (data.current.weather_code === 2) {
       console.log("Partly cloudy");
       currentImageName = "cloudy-day-2";
-    } else if ((data.current.weather_code = 3)) {
+    } else if (data.current.weather_code === 3) {
       console.log("Overcast");
       currentImageName = "cloudy";
-    } else if ((data.current.weather_code = 45)) {
+    } else if (data.current.weather_code === 45) {
       console.log("Fog");
-    } else if ((data.current.weather_code = 48)) {
+      currentImageName = "cloudy";
+    } else if (data.current.weather_code === 48) {
       console.log("Depositing rime fog");
-    } else if ((data.current.weather_code = 51)) {
+      currentImageName = "cloudy";
+    } else if (data.current.weather_code === 51) {
       console.log("Light drizzle");
-    } else if ((data.current.weather_code = 53)) {
+      currentImageName = "rainy-4";
+    } else if (data.current.weather_code === 53) {
       console.log("Moderate drizzle");
-    } else if ((data.current.weather_code = 55)) {
+      currentImageName = "rainy-5";
+    } else if (data.current.weather_code === 55) {
       console.log("Dense drizzle");
-    } else if ((data.current.weather_code = 56)) {
+      currentImageName = "rainy-6";
+    } else if (data.current.weather_code === 56) {
       console.log("Light freezing drizzle");
-    } else if ((data.current.weather_code = 57)) {
+      currentImageName = "rainy-7";
+    } else if (data.current.weather_code === 57) {
       console.log("Dense freezing drizzle");
-    } else if ((data.current.weather_code = 61)) {
+      currentImageName = "rainy-7";
+    } else if (data.current.weather_code === 61) {
       console.log("Slight rain");
       currentImageName = "rainy-4";
-    } else if ((data.current.weather_code = 63)) {
+    } else if (data.current.weather_code === 63) {
       console.log("Moderate rain");
       currentImageName = "rainy-5";
-    } else if ((data.current.weather_code = 65)) {
+    } else if (data.current.weather_code === 65) {
       console.log("Heavy rain");
       currentImageName = "rainy-6";
-    } else if ((data.current.weather_code = 66)) {
+    } else if (data.current.weather_code === 66) {
       console.log("Light freezing rain");
-    } else if ((data.current.weather_code = 67)) {
+      currentImageName = "rainy-7";
+    } else if (data.current.weather_code === 67) {
       console.log("Heavy freezing rain");
-    } else if ((data.current.weather_code = 71)) {
+      currentImageName = "rainy-7";
+    } else if (data.current.weather_code === 71) {
       console.log("Slight snow fall");
       currentImageName = "snowy-4";
-    } else if ((data.current.weather_code = 73)) {
+    } else if (data.current.weather_code === 73) {
       console.log("Moderate snow fall");
       currentImageName = "snowy-5";
-    } else if ((data.current.weather_code = 75)) {
+    } else if (data.current.weather_code === 75) {
       console.log("Heavy snow fall");
       currentImageName = "snowy-6";
-    } else if ((data.current.weather_code = 77)) {
+    } else if (data.current.weather_code === 77) {
       console.log("Snow grains");
-    } else if ((data.current.weather_code = 80)) {
+      currentImageName = "snowy-4";
+    } else if (data.current.weather_code === 80) {
       console.log("Slight rain showers");
       currentImageName = "rainy-1";
-    } else if ((data.current.weather_code = 81)) {
+    } else if (data.current.weather_code === 81) {
       console.log("Moderate rain showers");
       currentImageName = "rainy-2";
-    } else if ((data.current.weather_code = 82)) {
+    } else if (data.current.weather_code === 82) {
       console.log("Heavy rain showers");
       currentImageName = "rainy-3";
-    } else if ((data.current.weather_code = 85)) {
+    } else if (data.current.weather_code === 85) {
       console.log("Slight snow showers");
       currentImageName = "snowy-1";
-    } else if ((data.current.weather_code = 86)) {
+    } else if (data.current.weather_code === 86) {
       console.log("Heavy snow showers");
       currentImageName = "snowy-3";
-    } else if ((data.current.weather_code = 95)) {
+    } else if (data.current.weather_code === 95) {
       console.log("Slight or moderate thunderstorm");
-    } else if ((data.current.weather_code = 96)) {
+      currentImageName = "thunder";
+    } else if (data.current.weather_code === 96) {
       console.log("Thunderstorm with slight hail");
-    } else if ((data.current.weather_code = 99)) {
+      currentImageName = "thunder";
+    } else if (data.current.weather_code === 99) {
       console.log("Thunderstorm with heavy hail");
+      currentImageName = "thunder";
     } else {
       currentImageName = "weather";
     }
