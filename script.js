@@ -131,7 +131,7 @@ function construct(data) {
   }
 
   weatherCodes();
-  currentImage.style.backgroundImage = `url(./images/animated/${currentImageName}.svg)`;
+  currentImage.style.backgroundImage = `url(img/animated/${currentImageName}.svg)`;
   currentTemp.textContent = `${data.current.temperature_2m}${data.current_units.temperature_2m}`;
   currentWind.textContent = `${data.current.wind_speed_10m}${data.current_units.wind_speed_10m}`;
 
