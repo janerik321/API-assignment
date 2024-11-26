@@ -6,9 +6,14 @@ const currentImage = document.querySelector("#current-image");
 const currentTempWind = document.querySelector("#current-temp-wind");
 const currentTemp = document.querySelector("#current-temp");
 const currentWind = document.querySelector("#current-wind");
+const today = document.querySelector("#today");
 const week = document.querySelector("#week");
-// const currentTime = new Date();
+const currentTime = new Date();
 currentLocation.textContent = "Stavanger";
+
+console.log(
+  "Weather icons downloaded from amCharts: https://www.amcharts.com/free-animated-svg-weather-icons/"
+);
 
 async function getWeatherData() {
   try {
@@ -26,21 +31,10 @@ async function getWeatherData() {
 
 getWeatherData();
 
-// console.log(currentTime.getHours(), currentTime.getMinutes());
-
 function construct(data) {
   let currentImageName = "";
-  // let weatherCodeIndex = 0;
-  // if (currentTime.getMinutes() >= 30) {
-  //   weatherCodeIndex = currentTime.getHours() + 1;
-  // } else {
-  //   weatherCodeIndex = currentTime.getHours();
-  // }
 
   function weatherCodes() {
-    // console.log(data.hourly.weather_code[currentTime.getHours()]);
-    // console.log(data.current.weather_code);
-
     if (data.current.weather_code === 0) {
       console.log("Clear sky");
       currentImageName = "day";
@@ -132,25 +126,63 @@ function construct(data) {
 
   weatherCodes();
   currentImage.style.backgroundImage = `url(img/animated/${currentImageName}.svg)`;
-  currentTemp.textContent = `${data.current.temperature_2m}${data.current_units.temperature_2m}`;
-  currentWind.textContent = `${data.current.wind_speed_10m}${data.current_units.wind_speed_10m}`;
+  currentTemp.textContent = `${Math.round(data.current.temperature_2m)}${
+    data.current_units.temperature_2m
+  }`;
+  currentWind.textContent = `${Math.round(data.current.wind_speed_10m)}${
+    data.current_units.wind_speed_10m
+  }`;
 
-  //   const abc = data.hourly.temperature_2m;
+  for (i = currentTime.getHours(); i < currentTime.getHours() + 24; i += 4) {
+    console.log(data.hourly.weather_code[i]);
+    const weatherToday = document.createElement("div");
+    const weatherCodesToday = document.createElement("img");
+    const temperatureToday = document.createElement("p");
+    const hourToday = document.createElement("p");
+    weatherToday.classList.add("weather-today");
+    hourToday.classList.add("hour-today");
+    temperatureToday.textContent =
+      Math.round(data.hourly.temperature_2m[i]) +
+      data.hourly_units.temperature_2m;
+    // let zero = "0";
+    // if ((i = 10 || i <= 24)) {
+    //   zero = "";
+    //   d;
+    // }
 
-  //   for (let inc = 0; inc < 24; inc++) {
-  //     let temp = 0;
-  //     for (let i = 24 + inc * 6; i < 30 + inc * 6; i++) {
-  //       // console.log(data.hourly.temperature_2m[i]);
-  //       temp += data.hourly.temperature_2m[i];
-  //     }
-  //     console.log(Math.round(temp / 6));
-  //   }
+    if (i > 23) {
+      hourToday.textContent = `${i - 24}:00`;
+    } else {
+      hourToday.textContent = `${i}:00`;
+    }
+    weatherToday.append(temperatureToday, hourToday);
+    today.append(weatherToday);
+  }
 
+  // Fill in the rest of the week
   for (let days = 0; days < 6; days++) {
     const day = document.createElement("div");
     const dayName = document.createElement("p");
+    const dayCalc = currentTime.getDay() + days + 1;
     day.classList.add("day");
-    dayName.textContent = `Day ${days + 2}`;
+    dayName.classList.add("day-name");
+
+    if (dayCalc === 0 || dayCalc === 7) {
+      dayName.textContent = "Sunday";
+    } else if (dayCalc === 1 || dayCalc === 8) {
+      dayName.textContent = "Monday";
+    } else if (dayCalc === 2 || dayCalc === 9) {
+      dayName.textContent = "Tuesday";
+    } else if (dayCalc === 3 || dayCalc === 10) {
+      dayName.textContent = "Wednesday";
+    } else if (dayCalc === 4 || dayCalc === 11) {
+      dayName.textContent = "Thursday";
+    } else if (dayCalc === 5 || dayCalc === 12) {
+      dayName.textContent = "Friday";
+    } else if (dayCalc === 6 || dayCalc === 13) {
+      dayName.textContent = "Saturday";
+    }
+
     day.append(dayName);
     for (
       let quarterOfDay = 0 + days * 4;
@@ -179,3 +211,5 @@ function construct(data) {
     week.append(day);
   }
 }
+
+console.log(currentTime.getDay());

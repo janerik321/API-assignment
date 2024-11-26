@@ -22,7 +22,7 @@ main {
   overflow: hidden;
   font-family: sans-serif;
   font-weight: 200;
-  background-image: linear-gradient(to bottom, rgb(72, 98, 214), white);
+  background-image: linear-gradient(to bottom, rgb(62, 98, 214), white);
   box-shadow: 0px 10px 30px -10px black;
 }
 
@@ -72,8 +72,20 @@ main {
   filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.5));
 }
 
+#today {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.5));
+}
+
+.hour-today {
+  font-size: 0.7rem;
+}
 #week {
-  height: 400px;
+  height: 330px;
   display: flex;
   flex-direction: column;
   background-color: rgba(235, 244, 252, 0.7);
@@ -87,4 +99,8 @@ main {
 .day {
   display: flex;
   justify-content: space-between;
+}
+
+.day-name {
+  width: 10ch;
 }
