@@ -18,10 +18,24 @@
     <main>
       <div id="title-location">
         <h2>Weather forecast</h2>
-        <h2 id="location"></h2>
+        <div id="location-edit">
+          <h2 id="location"></h2>
+          <img src="./img/edit-svgrepo-com.svg" alt="Edit" />
+        </div>
+        <div id="location-interaction">
+          <form id="location-search">
+            <input
+              type="text"
+              name="location-input"
+              id="location-input"
+              placeholder="Enter location"
+            />
+            <input type="submit" value="Search" id="search-button" />
+          </form>
+          <div id="location-result"></div>
+        </div>
       </div>
       <div id="current">
-        <!-- <img src="" alt="" id="current-image" /> -->
         <div id="current-image"></div>
         <div id="current-temp-wind">
           <p id="current-temp"></p>

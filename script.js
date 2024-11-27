@@ -1,6 +1,11 @@
 const main = document.querySelector("main");
 const titleLocation = document.querySelector("#title-location");
+const locationEdit = document.querySelector("#location-edit");
 let currentLocation = document.querySelector("#location");
+const locationInteraction = document.querySelector("#location-interaction");
+const locationSearch = document.querySelector("#location-search");
+const locationInput = document.querySelector("#location-input");
+const locationResult = document.querySelector("#location-result");
 const current = document.querySelector("#current");
 const currentImage = document.querySelector("#current-image");
 const currentTempWind = document.querySelector("#current-temp-wind");
@@ -14,6 +19,8 @@ console.log(
   "Weather icons downloaded from amCharts: https://www.amcharts.com/free-animated-svg-weather-icons/"
 );
 
+locationEdit.style.display = "none";
+
 // Fetching location data (latitude & longitude)
 async function getLocationData(location) {
   try {
@@ -23,19 +30,45 @@ async function getLocationData(location) {
     const locationData = await jsonLocationFetch.json();
 
     console.log(locationData);
-    console.log(locationData.results[0].latitude);
-    console.log(locationData.results[0].longitude);
-    getWeatherData(
-      locationData.results[0].latitude,
-      locationData.results[0].longitude
-    );
-    currentLocation.textContent = `${locationData.results[0].name}, ${locationData.results[0].country}`;
+
+    // getWeatherData(
+    //   locationData.results[0].latitude,
+    //   locationData.results[0].longitude
+    // );
+    searchResults(locationData);
   } catch (err) {
     console.log(err);
   }
 }
 
-getLocationData("stavanger");
+function searchResults(locationData) {
+  locationData.results.forEach((e) => {
+    console.log(e.name + e.country);
+    const searchOption = document.createElement("p");
+    searchOption.textContent = `${e.name}, ${e.admin1}, ${e.country}`;
+    locationResult.append(searchOption);
+    searchOption.addEventListener("click", () => {
+      getWeatherData(e.latitude, e.longitude);
+      currentLocation.textContent = `${e.name}, ${e.admin1}`;
+      while (locationResult.firstChild) {
+        locationResult.firstChild.remove();
+        console.log("3");
+      }
+      while (today.firstChild) {
+        today.firstChild.remove();
+        console.log("1");
+      }
+      while (week.firstChild) {
+        week.firstChild.remove();
+        console.log("2");
+      }
+      locationInteraction.style.display = "none";
+      locationEdit.style.display = "flex";
+    });
+  });
+}
+
+// getLocationData("stavanger");
 
 // Fetching weather data
 async function getWeatherData(latitude, longitude) {
@@ -162,11 +195,10 @@ function construct(data) {
   }`;
 
   for (
-    i = currentTime.getHours() + 4;
+    let i = currentTime.getHours() + 4;
     i < currentTime.getHours() + 24 + 4;
     i += 4
   ) {
-    // console.log(data.hourly.weather_code[i]);
     const weatherToday = document.createElement("div");
     const weatherCodesToday = document.createElement("div");
     const temperatureToday = document.createElement("p");
@@ -255,6 +287,29 @@ function construct(data) {
     }
     week.append(day);
   }
+  console.log(today.firstChild);
 }
 
-console.log(currentTime.getDay());
+locationEdit.addEventListener("click", () => {
+  console.log("hello");
+  locationInteraction.style.display = "inline-block";
+  locationEdit.style.display = "none";
+});
+
+locationSearch.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const abc = new FormData(locationSearch);
+  console.log(abc.get("location-input"));
+  getLocationData(abc.get("location-input"));
+});
+
+currentWind.addEventListener("click", () => {
+  while (today.firstChild) {
+    today.firstChild.remove();
+    console.log("1");
+  }
+  while (week.firstChild) {
+    week.firstChild.remove();
+    console.log("2");
+  }
+});
