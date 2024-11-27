@@ -243,7 +243,7 @@ function construct(data) {
       quarter.classList.add("quarter");
       quarterWeatherCode.classList.add("quarter-weather-code");
 
-      // The "quarterOfDay * 6 + 2" parameter is to get the weather code for every 6 hours with a 26 hour offset(24 since we start on the following day + 2 since 2 is close to the middle of 0 and 5).
+      // The "quarterOfDay * 6 + 2" parameter is to get the weather code for every 6 hours with a 26 hour offset(24 since we start on the following day + 2 since 2 is close to the middle of 0 and 5 (can't average weather codes)).
       weatherCodes("hourly", quarterOfDay * 6 + 26);
 
       quarterWeatherCode.style.backgroundImage = `url(img/static/${imageName}.svg)`;

@@ -2,10 +2,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Nunito Sans", serif;
+  /* font-weight: 400; */
+}
+
+:root {
 }
 
 h2 {
-  font-weight: 200;
+  font-weight: 300;
 }
 
 body {
@@ -21,7 +26,7 @@ main {
   border-radius: 20px;
   overflow: hidden;
   font-family: sans-serif;
-  font-weight: 200;
+  /* font-weight: 600; */
   background-image: linear-gradient(to bottom, rgb(62, 98, 214), white);
   box-shadow: 0px 10px 30px -10px black;
 }
@@ -80,6 +85,7 @@ main {
   padding: 0.3rem 2rem;
   /* background-color: rgba(0, 0, 0, 0.05); */
   color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
   filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.5));
 }
 
@@ -116,17 +122,20 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .day-name {
   width: 10ch;
+  font-weight: 500;
 }
 
 .quarter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 .quarter-weather-code {
   width: 30px;
@@ -134,5 +143,5 @@ main {
   background-repeat: no-repeat;
   background-position: center;
   background-size: 120%;
-  filter: drop-shadow(0px 3px 2px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.1));
 }
