@@ -20,6 +20,17 @@ console.log(
 );
 
 locationEdit.style.display = "none";
+locationResult.style.display = "none";
+
+const storedData = localStorage.getItem("storedLocation");
+if (storedData) {
+  const locationInfo = JSON.parse(storedData);
+  // console.log(locationInfo);
+  getWeatherData(locationInfo.latitude, locationInfo.longitude);
+  locationInteraction.style.display = "none";
+  locationEdit.style.display = "flex";
+  currentLocation.textContent = `${locationInfo.name}, ${locationInfo.admin1}`;
+}
 
 // Fetching location data (latitude & longitude)
 async function getLocationData(location) {
@@ -29,12 +40,8 @@ async function getLocationData(location) {
     );
     const locationData = await jsonLocationFetch.json();
 
-    console.log(locationData);
+    // console.log(locationData);
 
-    // getWeatherData(
-    //   locationData.results[0].latitude,
-    //   locationData.results[0].longitude
-    // );
     searchResults(locationData);
   } catch (err) {
     console.log(err);
@@ -42,33 +49,35 @@ async function getLocationData(location) {
 }
 
 function searchResults(locationData) {
+  while (locationResult.firstChild) {
+    locationResult.firstChild.remove();
+  }
   locationData.results.forEach((e) => {
-    console.log(e.name + e.country);
+    // console.log(e.name + e.country);
     const searchOption = document.createElement("p");
     searchOption.textContent = `${e.name}, ${e.admin1}, ${e.country}`;
     locationResult.append(searchOption);
     searchOption.addEventListener("click", () => {
       getWeatherData(e.latitude, e.longitude);
       currentLocation.textContent = `${e.name}, ${e.admin1}`;
+
+      localStorage.setItem("storedLocation", JSON.stringify(e));
+
       while (locationResult.firstChild) {
         locationResult.firstChild.remove();
-        console.log("3");
       }
       while (today.firstChild) {
         today.firstChild.remove();
-        console.log("1");
       }
       while (week.firstChild) {
         week.firstChild.remove();
-        console.log("2");
       }
       locationInteraction.style.display = "none";
+      locationResult.style.display = "none";
       locationEdit.style.display = "flex";
     });
   });
 }
-
-// getLocationData("stavanger");
 
 // Fetching weather data
 async function getWeatherData(latitude, longitude) {
@@ -78,7 +87,7 @@ async function getWeatherData(latitude, longitude) {
     );
     const weatherData = await jsonWeatherFetch.json();
 
-    console.log(weatherData);
+    // console.log(weatherData);
     construct(weatherData);
   } catch (err) {
     console.log(err);
@@ -213,11 +222,6 @@ function construct(data) {
     temperatureToday.textContent =
       Math.round(data.hourly.temperature_2m[i]) +
       data.hourly_units.temperature_2m;
-    // let zero = "0";
-    // if ((i = 10 || i <= 24)) {
-    //   zero = "";
-    //   d;
-    // }
 
     if (i > 23) {
       hourToday.textContent = `${i - 24}:00`;
@@ -287,29 +291,17 @@ function construct(data) {
     }
     week.append(day);
   }
-  console.log(today.firstChild);
+  // console.log(today.firstChild);
 }
 
 locationEdit.addEventListener("click", () => {
-  console.log("hello");
   locationInteraction.style.display = "inline-block";
   locationEdit.style.display = "none";
 });
 
 locationSearch.addEventListener("submit", (e) => {
   e.preventDefault();
-  const abc = new FormData(locationSearch);
-  console.log(abc.get("location-input"));
-  getLocationData(abc.get("location-input"));
-});
-
-currentWind.addEventListener("click", () => {
-  while (today.firstChild) {
-    today.firstChild.remove();
-    console.log("1");
-  }
-  while (week.firstChild) {
-    week.firstChild.remove();
-    console.log("2");
-  }
+  const locationValue = new FormData(locationSearch);
+  getLocationData(locationValue.get("location-input"));
+  locationResult.style.display = "inline-block";
 });
