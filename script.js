@@ -83,11 +83,11 @@ function searchResults(locationData) {
 async function getWeatherData(latitude, longitude) {
   try {
     const jsonWeatherFetch = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_gusts_10m&hourly=temperature_2m,precipitation,weather_code,wind_speed_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_gusts_10m&hourly=temperature_2m,is_day,precipitation,weather_code,wind_speed_10m,wind_gusts_10m&wind_speed_unit=ms&timezone=auto`
     );
     const weatherData = await jsonWeatherFetch.json();
 
-    // console.log(weatherData);
+    console.log(weatherData);
     construct(weatherData);
   } catch (err) {
     console.log(err);
@@ -97,23 +97,39 @@ async function getWeatherData(latitude, longitude) {
 // Creating and appending weather data
 function construct(data) {
   let imageName = "";
+  if (data.current.is_day === 1) {
+    main.style.background =
+      "linear-gradient(to bottom, rgb(62, 98, 214), white)";
+  } else if (data.current.is_day === 0) {
+    main.style.background =
+      "linear-gradient(to bottom, rgb(12, 19, 40), rgb(62, 98, 214))";
+  }
 
   function weatherCodes(timeframe, index) {
     let weatherCodeTimeframe;
+    let isDay;
     if (timeframe === "current") {
       weatherCodeTimeframe = data.current.weather_code;
+      isDay = data.current.is_day;
     } else if (timeframe === "hourly") {
       weatherCodeTimeframe = data.hourly.weather_code[index];
+      isDay = data.hourly.is_day[index];
     }
-    if (weatherCodeTimeframe === 0) {
+    if (weatherCodeTimeframe === 0 && isDay === 1) {
       // console.log("Clear sky");
       imageName = "day";
-    } else if (weatherCodeTimeframe === 1) {
+    } else if (weatherCodeTimeframe === 0 && isDay === 0) {
+      imageName = "night";
+    } else if (weatherCodeTimeframe === 1 && isDay === 1) {
       // console.log("Mainly clear");
       imageName = "cloudy-day-1";
-    } else if (weatherCodeTimeframe === 2) {
+    } else if (weatherCodeTimeframe === 1 && isDay === 0) {
+      imageName = "cloudy-night-1";
+    } else if (weatherCodeTimeframe === 2 && isDay === 1) {
       // console.log("Partly cloudy");
       imageName = "cloudy-day-2";
+    } else if (weatherCodeTimeframe === 2 && isDay === 0) {
+      imageName = "cloudy-night-2";
     } else if (weatherCodeTimeframe === 3) {
       // console.log("Overcast");
       imageName = "cloudy";
@@ -165,21 +181,31 @@ function construct(data) {
     } else if (weatherCodeTimeframe === 77) {
       // console.log("Snow grains");
       imageName = "snowy-4";
-    } else if (weatherCodeTimeframe === 80) {
+    } else if (weatherCodeTimeframe === 80 && isDay === 1) {
       // console.log("Slight rain showers");
       imageName = "rainy-1";
-    } else if (weatherCodeTimeframe === 81) {
+    } else if (weatherCodeTimeframe === 80 && isDay === 0) {
+      imageName = "rainy-4";
+    } else if (weatherCodeTimeframe === 81 && isDay === 1) {
       // console.log("Moderate rain showers");
       imageName = "rainy-2";
-    } else if (weatherCodeTimeframe === 82) {
+    } else if (weatherCodeTimeframe === 81 && isDay === 0) {
+      imageName = "rainy-5";
+    } else if (weatherCodeTimeframe === 82 && isDay === 1) {
       // console.log("Heavy rain showers");
       imageName = "rainy-3";
-    } else if (weatherCodeTimeframe === 85) {
+    } else if (weatherCodeTimeframe === 82 && isDay === 0) {
+      imageName = "rainy-6";
+    } else if (weatherCodeTimeframe === 85 && isDay === 1) {
       // console.log("Slight snow showers");
       imageName = "snowy-1";
-    } else if (weatherCodeTimeframe === 86) {
+    } else if (weatherCodeTimeframe === 85 && isDay === 0) {
+      imageName = "snowy-4";
+    } else if (weatherCodeTimeframe === 86 && isDay === 1) {
       // console.log("Heavy snow showers");
       imageName = "snowy-3";
+    } else if (weatherCodeTimeframe === 86 && isDay === 0) {
+      imageName = "snowy-6";
     } else if (weatherCodeTimeframe === 95) {
       // console.log("Slight or moderate thunderstorm");
       imageName = "thunder";
@@ -204,10 +230,13 @@ function construct(data) {
   }`;
 
   for (
-    let i = currentTime.getHours() + 4;
-    i < currentTime.getHours() + 24 + 4;
+    // let i = currentTime.getHours() + 4;
+    // i < currentTime.getHours() + 24 + 4;
+    let i = currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 4;
+    i < currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 24 + 4;
     i += 4
   ) {
+    console.log(i);
     const weatherToday = document.createElement("div");
     const weatherCodesToday = document.createElement("div");
     const temperatureToday = document.createElement("p");
@@ -236,7 +265,8 @@ function construct(data) {
   for (let days = 0; days < 6; days++) {
     const day = document.createElement("div");
     const dayName = document.createElement("p");
-    const dayCalc = currentTime.getDay() + days + 1;
+    // const dayCalc = currentTime.getDay() + days + 1;
+    const dayCalc = currentTime.getUTCDay() + days + 1;
     day.classList.add("day");
     dayName.classList.add("day-name");
 
@@ -305,3 +335,6 @@ locationSearch.addEventListener("submit", (e) => {
   getLocationData(locationValue.get("location-input"));
   locationResult.style.display = "inline-block";
 });
+
+console.log(currentTime.getUTCHours());
+console.log(currentTime.getUTCDay());
