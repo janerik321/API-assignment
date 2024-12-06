@@ -29,7 +29,7 @@ if (storedData) {
   getWeatherData(locationInfo.latitude, locationInfo.longitude);
   locationInteraction.style.display = "none";
   locationEdit.style.display = "flex";
-  currentLocation.textContent = `${locationInfo.name}, ${locationInfo.admin1}`;
+  currentLocation.textContent = `${locationInfo.name}${locationInfo.admin1}`;
 }
 
 // Fetching location data (latitude & longitude)
@@ -40,7 +40,7 @@ async function getLocationData(location) {
     );
     const locationData = await jsonLocationFetch.json();
 
-    // console.log(locationData);
+    console.log(locationData);
 
     searchResults(locationData);
   } catch (err) {
@@ -55,11 +55,25 @@ function searchResults(locationData) {
   locationData.results.forEach((e) => {
     // console.log(e.name + e.country);
     const searchOption = document.createElement("p");
-    searchOption.textContent = `${e.name}, ${e.admin1}, ${e.country}`;
+
+    // Checking to see if e.admin1 and e.country exists. If not, they are created and given the value "" to avoid displaying "undefined".
+    // If they do exist, commas are added.
+    if (!e.admin1) {
+      e.admin1 = "";
+    } else if (e.admin1 !== "") {
+      e.admin1 = `, ${e.admin1}`;
+    }
+    if (!e.country) {
+      e.country = "";
+      console.log(e.country + "emptyCountry");
+    } else if (e.country !== "") {
+      e.country = `, ${e.country}`;
+    }
+    searchOption.textContent = `${e.name}${e.admin1}${e.country}`;
     locationResult.append(searchOption);
     searchOption.addEventListener("click", () => {
       getWeatherData(e.latitude, e.longitude);
-      currentLocation.textContent = `${e.name}, ${e.admin1}`;
+      currentLocation.textContent = `${e.name}${e.admin1}`;
 
       localStorage.setItem("storedLocation", JSON.stringify(e));
 
@@ -232,11 +246,18 @@ function construct(data) {
   for (
     // let i = currentTime.getHours() + 4;
     // i < currentTime.getHours() + 24 + 4;
-    let i = currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 4;
-    i < currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 24 + 4;
+
+    // Math.floor() to fix issue with locations that have a utc offset not in whole hours
+    let i = Math.floor(
+      currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 4
+    );
+    i <
+    Math.floor(
+      currentTime.getUTCHours() + data.utc_offset_seconds / 3600 + 24 + 4
+    );
     i += 4
   ) {
-    console.log(i);
+    // console.log(i);
     const weatherToday = document.createElement("div");
     const weatherCodesToday = document.createElement("div");
     const temperatureToday = document.createElement("p");
