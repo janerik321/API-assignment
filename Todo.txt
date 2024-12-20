@@ -1,0 +1,10 @@
+- fjern søkefelt/søkeresultat ved å klikke utenfor
+- timestamp
+- større ikoner
+- suggestions as you type?
+- night mode?
+- bakgrunnsfarge
+- vindkast
+- desktop mode?
+- jevn animasjon på søkeresultatfelt?
+- lokal tid

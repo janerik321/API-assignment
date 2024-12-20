@@ -14,6 +14,7 @@ const currentWind = document.querySelector("#current-wind");
 const today = document.querySelector("#today");
 const week = document.querySelector("#week");
 const currentTime = new Date();
+const localTime = document.querySelector("#local-time");
 
 console.log(
   "Weather icons downloaded from amCharts: https://www.amcharts.com/free-animated-svg-weather-icons/"
@@ -86,9 +87,10 @@ function searchResults(locationData) {
       while (week.firstChild) {
         week.firstChild.remove();
       }
-      locationInteraction.style.display = "none";
-      locationResult.style.display = "none";
-      locationEdit.style.display = "flex";
+      // locationInteraction.style.display = "none";
+      // locationResult.style.display = "none";
+      // locationEdit.style.display = "flex";
+      removeSearch();
     });
   });
 }
@@ -234,7 +236,30 @@ function construct(data) {
     }
   }
 
+  // Set local time
+
+  // exceedingMinutes & addHour is to account for locations where the timezone is offset in minutes in addition to hours.
+  // This is to handle spillover in the local time display (e.g. 19:77 -> 20:17)
+  let exceedingMinutes =
+    currentTime.getUTCMinutes() + (data.utc_offset_seconds % 3600) / 60;
+  let addHour = 0;
+  if (exceedingMinutes >= 60) {
+    exceedingMinutes = exceedingMinutes - 60;
+    addHour = 1;
+  }
+
+  localTime.textContent = `Local time: ${(
+    currentTime.getUTCHours() +
+    Math.floor(data.utc_offset_seconds / 3600) +
+    addHour
+  )
+    .toString()
+    .padStart(2, "0")}:${exceedingMinutes.toString().padStart(2, "0")}`;
+
+  // *************************
+
   weatherCodes("current");
+
   currentImage.style.backgroundImage = `url(img/animated/${imageName}.svg)`;
   currentTemp.textContent = `${Math.round(data.current.temperature_2m)}${
     data.current_units.temperature_2m
@@ -274,9 +299,9 @@ function construct(data) {
       data.hourly_units.temperature_2m;
 
     if (i > 23) {
-      hourToday.textContent = `${i - 24}:00`;
+      hourToday.textContent = `${(i - 24).toString().padStart(2, "0")}:00`;
     } else {
-      hourToday.textContent = `${i}:00`;
+      hourToday.textContent = `${i.toString().padStart(2, "0")}:00`;
     }
     weatherToday.append(weatherCodesToday, temperatureToday, hourToday);
     today.append(weatherToday);
@@ -356,6 +381,13 @@ locationSearch.addEventListener("submit", (e) => {
   getLocationData(locationValue.get("location-input"));
   locationResult.style.display = "inline-block";
 });
+
+function removeSearch() {
+  locationInteraction.style.display = "none";
+  locationResult.style.display = "none";
+  locationEdit.style.display = "flex";
+  // locationSearch.style.display = "none";
+}
 
 console.log(currentTime.getUTCHours());
 console.log(currentTime.getUTCDay());
