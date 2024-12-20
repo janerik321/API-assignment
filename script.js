@@ -13,7 +13,7 @@ const currentTemp = document.querySelector("#current-temp");
 const currentWind = document.querySelector("#current-wind");
 const today = document.querySelector("#today");
 const week = document.querySelector("#week");
-const currentTime = new Date();
+let currentTime = new Date();
 const localTime = document.querySelector("#local-time");
 
 console.log(
@@ -116,9 +116,11 @@ function construct(data) {
   if (data.current.is_day === 1) {
     main.style.background =
       "linear-gradient(to bottom, rgb(62, 98, 214), white)";
+    localTime.style.color = "rgba(255, 255, 255, 0.7)";
   } else if (data.current.is_day === 0) {
     main.style.background =
       "linear-gradient(to bottom, rgb(12, 19, 40), rgb(62, 98, 214))";
+    localTime.style.color = "rgba(255, 255, 255, 0.55)";
   }
 
   function weatherCodes(timeframe, index) {
@@ -240,6 +242,8 @@ function construct(data) {
 
   // exceedingMinutes & addHour is to account for locations where the timezone is offset in minutes in addition to hours.
   // This is to handle spillover in the local time display (e.g. 19:77 -> 20:17)
+  currentTime = new Date();
+
   let exceedingMinutes =
     currentTime.getUTCMinutes() + (data.utc_offset_seconds % 3600) / 60;
   let addHour = 0;
@@ -256,6 +260,7 @@ function construct(data) {
     .toString()
     .padStart(2, "0")}:${exceedingMinutes.toString().padStart(2, "0")}`;
 
+  console.log(currentTime);
   // *************************
 
   weatherCodes("current");
@@ -264,7 +269,9 @@ function construct(data) {
   currentTemp.textContent = `${Math.round(data.current.temperature_2m)}${
     data.current_units.temperature_2m
   }`;
-  currentWind.textContent = `${Math.round(data.current.wind_speed_10m)}${
+  currentWind.textContent = `${Math.round(
+    data.current.wind_speed_10m
+  )}(${Math.round(data.current.wind_gusts_10m)})${
     data.current_units.wind_speed_10m
   }`;
 
@@ -389,5 +396,5 @@ function removeSearch() {
   // locationSearch.style.display = "none";
 }
 
-console.log(currentTime.getUTCHours());
-console.log(currentTime.getUTCDay());
+// console.log(currentTime.getUTCHours());
+// console.log(currentTime.getUTCDay());
