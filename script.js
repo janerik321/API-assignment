@@ -1,5 +1,7 @@
+const body = document.querySelector("body");
 const main = document.querySelector("main");
 const titleLocation = document.querySelector("#title-location");
+const dayNightButton = document.querySelector("#day-night-button");
 const locationEdit = document.querySelector("#location-edit");
 let currentLocation = document.querySelector("#location");
 const locationInteraction = document.querySelector("#location-interaction");
@@ -15,6 +17,7 @@ const today = document.querySelector("#today");
 const week = document.querySelector("#week");
 let currentTime = new Date();
 const localTime = document.querySelector("#local-time");
+let nightMode = false;
 
 console.log(
   "Weather icons downloaded from amCharts: https://www.amcharts.com/free-animated-svg-weather-icons/"
@@ -376,6 +379,19 @@ function construct(data) {
   }
   // console.log(today.firstChild);
 }
+
+dayNightButton.addEventListener("click", () => {
+  nightMode = !nightMode;
+  if (nightMode) {
+    body.style.backgroundColor = "rgb(40, 50, 75)";
+    week.style.backgroundColor = "rgba(21, 26, 30, 0.9)";
+    week.style.color = "rgba(255, 255, 255, 0.85)";
+  } else if (!nightMode) {
+    body.style.backgroundColor = "rgb(120, 150, 220)";
+    week.style.backgroundColor = "rgba(235, 244, 252, 0.9)";
+    week.style.color = "rgba(0, 0, 0, 0.8)";
+  }
+});
 
 locationEdit.addEventListener("click", () => {
   locationInteraction.style.display = "inline-block";
