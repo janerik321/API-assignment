@@ -383,10 +383,12 @@ function construct(data) {
 dayNightButton.addEventListener("click", () => {
   nightMode = !nightMode;
   if (nightMode) {
+    dayNightButton.style.backgroundImage = "url(img/moon-svgrepo-com.svg)";
     body.style.backgroundColor = "rgb(40, 50, 75)";
     week.style.backgroundColor = "rgba(21, 26, 30, 0.9)";
     week.style.color = "rgba(255, 255, 255, 0.85)";
   } else if (!nightMode) {
+    dayNightButton.style.backgroundImage = "url(img/sun-svgrepo-com.svg)";
     body.style.backgroundColor = "rgb(120, 150, 220)";
     week.style.backgroundColor = "rgba(235, 244, 252, 0.9)";
     week.style.color = "rgba(0, 0, 0, 0.8)";

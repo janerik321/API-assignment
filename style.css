@@ -18,6 +18,7 @@ body {
   justify-content: center;
   align-items: center;
   background-color: rgb(120, 150, 220);
+  transition-duration: 700ms;
 }
 main {
   width: 375px;
@@ -44,8 +45,15 @@ main {
 #day-night-button {
   width: 1.5rem;
   height: 1.5rem;
-  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0);
+  background-image: url(img/sun-svgrepo-com.svg);
+  background-size: 100%;
   border-radius: 50%;
+  border: none;
+  filter: invert();
+  transition-duration: 700ms;
 }
 
 #location-edit {
@@ -169,6 +177,7 @@ main {
   font-size: 1.2rem;
   color: rgba(0, 0, 0, 0.8);
   justify-content: space-between;
+  transition-duration: 700ms;
 }
 
 .day {
